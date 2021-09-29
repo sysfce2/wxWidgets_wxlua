@@ -2469,6 +2469,9 @@ static const char* wxluaclassname_wxTimeSpan = "wxTimeSpan";
 static const char* wxluaclassname_wxTranslations = "wxTranslations";
 static const char* wxluaclassname_wxTranslationsLoader = "wxTranslationsLoader";
 static const char* wxluaclassname_wxULongLong = "wxULongLong";
+static const char* wxluaclassname_wxUniChar = "wxUniChar";
+static const char* wxluaclassname_wxVariant = "wxVariant";
+static const char* wxluaclassname_wxVariantData = "wxVariantData";
 static const char* wxluaclassname_wxVersionInfo = "wxVersionInfo";
 
 static const char* wxluabaseclassnames_wxArchiveFSHandler[] = { wxluaclassname_wxFileSystemHandler, NULL };
@@ -2533,6 +2536,10 @@ static const char* wxluabaseclassnames_wxStringTokenizer[] = { wxluaclassname_wx
 static wxLuaBindClass* wxluabaseclassbinds_wxStringTokenizer[] = { NULL };
 static const char* wxluabaseclassnames_wxSystemOptions[] = { wxluaclassname_wxObject, NULL };
 static wxLuaBindClass* wxluabaseclassbinds_wxSystemOptions[] = { NULL };
+static const char* wxluabaseclassnames_wxVariant[] = { wxluaclassname_wxObject, NULL };
+static wxLuaBindClass* wxluabaseclassbinds_wxVariant[] = { NULL };
+static const char* wxluabaseclassnames_wxVariantData[] = { wxluaclassname_wxObjectRefData, NULL };
+static wxLuaBindClass* wxluabaseclassbinds_wxVariantData[] = { NULL };
 // ---------------------------------------------------------------------------
 // Lua Tag Method Values and Tables for each Class
 // ---------------------------------------------------------------------------
@@ -2642,6 +2649,9 @@ extern void wxLua_wxStringClientData_delete_function(void** p);
 extern wxLuaBindMethod wxStringTokenizer_methods[];
 extern int wxStringTokenizer_methodCount;
 extern void wxLua_wxStringTokenizer_delete_function(void** p);
+extern wxLuaBindMethod wxUniChar_methods[];
+extern int wxUniChar_methodCount;
+extern void wxLua_wxUniChar_delete_function(void** p);
 
 #if wxCHECK_VERSION(2,8,0) && wxLUA_USE_wxStandardPaths
     extern wxLuaBindMethod wxStandardPaths_methods[];
@@ -2909,6 +2919,15 @@ extern void wxLua_wxStringTokenizer_delete_function(void** p);
     extern void wxLua_wxTextOutputStream_delete_function(void** p);
 #endif // wxUSE_STREAMS
 
+#if wxUSE_VARIANT
+    extern wxLuaBindMethod wxVariant_methods[];
+    extern int wxVariant_methodCount;
+    extern void wxLua_wxVariant_delete_function(void** p);
+    extern wxLuaBindMethod wxVariantData_methods[];
+    extern int wxVariantData_methodCount;
+    extern void wxLua_wxVariantData_delete_function(void** p);
+#endif // wxUSE_VARIANT
+
 
 
 
@@ -3169,6 +3188,13 @@ wxLuaBindClass* wxLuaGetClassList_wxbase(size_t &count)
         { wxluaclassname_wxULongLong, wxULongLong_methods, wxULongLong_methodCount, NULL, &wxluatype_wxULongLong, NULL, NULL, NULL, NULL, NULL, 0, &wxLua_wxULongLong_delete_function, }, 
 #endif // wxUSE_LONGLONG
 
+        { wxluaclassname_wxUniChar, wxUniChar_methods, wxUniChar_methodCount, NULL, &wxluatype_wxUniChar, NULL, NULL, NULL, NULL, NULL, 0, &wxLua_wxUniChar_delete_function, }, 
+
+#if wxUSE_VARIANT
+        { wxluaclassname_wxVariant, wxVariant_methods, wxVariant_methodCount, CLASSINFO(wxVariant), &wxluatype_wxVariant, wxluabaseclassnames_wxVariant, wxluabaseclassbinds_wxVariant, NULL, NULL, NULL, 0, &wxLua_wxVariant_delete_function, }, 
+        { wxluaclassname_wxVariantData, wxVariantData_methods, wxVariantData_methodCount, NULL, &wxluatype_wxVariantData, wxluabaseclassnames_wxVariantData, wxluabaseclassbinds_wxVariantData, NULL, NULL, NULL, 0, &wxLua_wxVariantData_delete_function, }, 
+#endif // wxUSE_VARIANT
+
 #if wxCHECK_VERSION(2,9,2)
         { wxluaclassname_wxVersionInfo, wxVersionInfo_methods, wxVersionInfo_methodCount, NULL, &wxluatype_wxVersionInfo, NULL, NULL, NULL, NULL, NULL, 0, &wxLua_wxVersionInfo_delete_function, }, 
 #endif // wxCHECK_VERSION(2,9,2)
@@ -3211,12 +3237,15 @@ bool wxLuaBinding_wxbase::RegisterBinding(const wxLuaState& wxlState)
     wxluaT_pushuserdatatype(L, NULL, wxluatype_NULL, true, true);
     lua_rawset(L, -3); // set t["NULL"] = userdata(NULL) w/ NULL tag
 
+    p_wxluatype_wxUniChar           = &wxluatype_wxUniChar;
     p_wxluatype_wxString            = &wxluatype_wxString;
     p_wxluatype_wxArrayString       = &wxluatype_wxArrayString;
     p_wxluatype_wxSortedArrayString = &wxluatype_wxSortedArrayString;
     p_wxluatype_wxArrayInt          = &wxluatype_wxArrayInt;
     p_wxluatype_wxArrayDouble       = &wxluatype_wxArrayDouble;
     p_wxluatype_wxMemoryBuffer      = &wxluatype_wxMemoryBuffer;
+    p_wxluatype_wxDateTime          = &wxluatype_wxDateTime;
+    p_wxluatype_wxVariant           = &wxluatype_wxVariant;
 
     return ret;
 }
